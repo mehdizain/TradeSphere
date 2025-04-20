@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base app theme -->
+    <style name="Theme.TradeSphere" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/purple_700</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+    <style name="CategoryButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">80dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
+
+        <!-- App Title -->
+        <TextView
+            android:id="@+id/tvAccountInfoTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TradeSphere"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Account Information Block (Profile Picture, Followers, Following, Posts) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="@drawable/account_info_bg"
+        android:layout_marginBottom="16dp">
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_default_profile"
+            android:contentDescription="Profile Picture"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/circular_bg"
+            android:scaleType="centerCrop"/>
+
+        <!-- Account Info (Followers, Following, Posts) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvFollowers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Followers: 120"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvFollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Following: 80"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvPosts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Posts: 45"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Edit Profile Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Edit Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your name"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"/>
+
+        <!-- Edit Email -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your email"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"/>
+
+        <!-- Edit Password -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"
+            android:inputType="textPassword"/>
+
+        <!-- Edit Description -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter a short description"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"
+            android:maxLines="3"/>
+    </LinearLayout>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:background="@color/purple_500"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
+
+        <!-- App Title -->
+        <TextView
+            android:id="@+id/tvSearchTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TradeSphere"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search for Accounts or Posts"
+        android:padding="12dp"
+        android:background="@drawable/search_border"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_search" />
+
+    <!-- Category Filter (Accounts, Posts) -->
+    <LinearLayout
+        android:id="@+id/categoryFilterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accounts"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posts"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+    </LinearLayout>
+
+    <!-- Search Results -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>
