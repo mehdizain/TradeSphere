@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="15dp">
+
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_tradesphere"
+                android:contentDescription="App Logo"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TradeSphere"
+                android:textSize="32sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Product"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Add Images -->
+        <Button
+            android:id="@+id/btnAddImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Images"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Product Title -->
+        <EditText
+            android:id="@+id/etProductTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Title"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Product Price -->
+        <EditText
+            android:id="@+id/etProductPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Price"
+            android:inputType="number"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Product Description -->
+        <EditText
+            android:id="@+id/etProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Description"
+            android:padding="12dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"
+            android:layout_marginBottom="16dp"
+            android:minLines="4"
+            android:gravity="top"/>
+
+        <!-- Add Product Button -->
+        <Button
+            android:id="@+id/btnSubmitProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add this product"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/purple_500"/>
+    </LinearLayout>
+</ScrollView>

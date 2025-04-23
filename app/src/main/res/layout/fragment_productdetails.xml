@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="15dp">
+
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_tradesphere"
+                android:contentDescription="App Logo"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TradeSphere"
+                android:textSize="32sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/sample_product"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circular_bg" />
+
+        <TextView
+            android:id="@+id/tvProductTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brown Leather Shoes"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="An imported top branded shoe having fine lether quality along with wear back warantee. The brown color have grace and shine while you wear it."
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs. 5000"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/purple_500" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your comment"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edit_text_border"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shoes Palace\n\nGreat Product"
+                android:textSize="14sp"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnBuy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Buy"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_500"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnStartChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Start Chat"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/purple_500"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

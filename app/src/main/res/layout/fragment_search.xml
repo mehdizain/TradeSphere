@@ -8,22 +8,28 @@
 
     <!-- Top App Bar -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingBottom="12dp">
+        android:gravity="center"
+        android:paddingBottom="15dp">
 
-        <!-- App Title -->
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/logo_tradesphere"
+            android:contentDescription="App Logo"
+            android:layout_marginEnd="8dp" />
+
         <TextView
-            android:id="@+id/tvSearchTitle"
-            android:layout_width="0dp"
+            android:id="@+id/tvAppTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="TradeSphere"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:textSize="32sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Search Bar -->
