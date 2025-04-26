@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="16dp">
@@ -22,6 +23,7 @@
             android:src="@drawable/logo_tradesphere"
             android:contentDescription="App Logo"
             android:layout_marginEnd="8dp" />
+
         <TextView
             android:id="@+id/tvHomeTitle"
             android:layout_width="0dp"
@@ -40,7 +42,7 @@
             android:src="@drawable/ic_add"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Add New Post"
-            android:tint="@color/purple_500"/>
+            app:tint="@color/purple_500"/>
     </LinearLayout>
 
     <!-- Category Filter -->
@@ -56,6 +58,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="All"
@@ -63,6 +66,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
             <Button
+                android:id="@+id/btnElectronics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Electronics"
@@ -70,6 +74,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
             <Button
+                android:id="@+id/btnClothing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Clothing"
@@ -77,6 +82,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
             <Button
+                android:id="@+id/btnBooks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Books"
