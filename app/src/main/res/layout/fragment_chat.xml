@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="@color/white">
 
+    <!-- Top App Bar (TradeSphere Logo and Title) -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,8 +30,8 @@
             android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
-    <!-- Chat Header -->
 
+    <!-- Chat Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,5 +103,23 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Message Item Layout (Directly Inside this Layout) -->
+    <LinearLayout
+        android:id="@+id/item_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sample message"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
     </LinearLayout>
 </LinearLayout>
