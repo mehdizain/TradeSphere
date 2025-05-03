@@ -1,5 +1,6 @@
 package com.example.tradesphere.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tradesphere.NewPostActivity
 import com.example.tradesphere.R
 import com.example.tradesphere.adapters.PostAdapter
 
@@ -69,7 +71,8 @@ class HomeFragment : Fragment() {
 
         // Handle new post button
         btnNewPost.setOnClickListener {
-            // Navigate to the new post screen (handle navigation or show a dialog)
+            val intent = Intent(requireContext(), NewPostActivity::class.java)
+            startActivity(intent)
         }
 
         return rootView
