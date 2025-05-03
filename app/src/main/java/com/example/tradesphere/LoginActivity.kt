@@ -1,18 +1,25 @@
-package com.yourpackage
+package com.example.tradesphere
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tradesphere.R
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(this) // Ensures Firebase is initialized
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        auth = FirebaseAuth.getInstance()
 
         // Initialize views
         val etLoginEmail: EditText = findViewById(R.id.etLoginEmail)
@@ -30,27 +37,32 @@ class LoginActivity : AppCompatActivity() {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill in both fields", Toast.LENGTH_SHORT).show()
             } else {
-                // Perform actual login here (authentication logic)
-                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                // For example, navigate to another activity after login
-                // startActivity(Intent(this, HomeActivity::class.java))
+                // Firebase authentication: sign in with email and password
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Login success
+                            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainActivity::class.java)) // Go to the main activity
+                            finish()  // Close the login activity
+                        } else {
+                            // Login failure
+                            Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
             }
         }
 
         // Set up Forgot Password text click listener
         tvForgotPassword.setOnClickListener {
-            // Handle forgot password action here
+            // Handle forgot password action (you could redirect to a separate activity or show a dialog)
             Toast.makeText(this, "Redirect to Forgot Password", Toast.LENGTH_SHORT).show()
-            // For example, navigate to a new screen for resetting the password
-            // startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
         // Set up Sign Up redirect text click listener
         tvSignupRedirect.setOnClickListener {
             // Redirect to Signup Activity
-            // For example:
-            // startActivity(Intent(this, SignupActivity::class.java))
-            Toast.makeText(this, "Redirect to Signup", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SignupActivity::class.java))
         }
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "979033286031",
+    "project_id": "tradesphere-4c58b",
+    "storage_bucket": "tradesphere-4c58b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979033286031:android:fa84bf23b6a29e19ec57fa",
+        "android_client_info": {
+          "package_name": "com.example.tradesphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0bHaZlX63MJLe2QE4ptbvP93cJkZm7yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
