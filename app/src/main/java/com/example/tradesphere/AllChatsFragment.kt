@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tradesphere.R
 import com.example.tradesphere.adapters.ChatAdapter
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class AllChatsFragment : Fragment() {
 
@@ -19,6 +24,13 @@ class AllChatsFragment : Fragment() {
     private lateinit var tvChatsHeader: TextView
     private lateinit var recyclerChats: RecyclerView
     private lateinit var imgLogo: ImageView
+
+    // Firebase instance
+    private lateinit var database: FirebaseDatabase
+    private lateinit var chatsRef: DatabaseReference
+
+    // Data holder for chats
+    private val chatList: MutableList<String> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +51,37 @@ class AllChatsFragment : Fragment() {
         // Set up RecyclerView for chats
         recyclerChats.layoutManager = LinearLayoutManager(context)
 
-        // Sample data for chats (replace with real data)
-        val chatList = listOf(
-            "Chat 1", "Chat 2", "Chat 3", "Chat 4", "Chat 5" // Replace with actual data
-        )
+        // Initialize Firebase Database
+        database = FirebaseDatabase.getInstance()
+        chatsRef = database.reference.child("chats")
 
-        // Set adapter
-        recyclerChats.adapter = ChatAdapter(chatList)
+        // Fetch chat data from Firebase
+        fetchChats()
 
         return rootView
+    }
+
+    private fun fetchChats() {
+        chatsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Clear previous chat list and fetch new data
+                chatList.clear()
+
+                // Iterate over the snapshot and extract chat names
+                for (chatSnapshot in dataSnapshot.children) {
+                    val chatName = chatSnapshot.child("name").getValue(String::class.java)
+                    chatName?.let {
+                        chatList.add(it)
+                    }
+                }
+
+                // Notify adapter with the updated list
+                recyclerChats.adapter = ChatAdapter(chatList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors here (e.g., no connection, etc.)
+            }
+        })
     }
 }

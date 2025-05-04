@@ -70,6 +70,16 @@
             android:backgroundTint="@color/purple_500"
             android:textColor="@android:color/white" />
 
+        <!-- Category Spinner -->
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/edit_text_border"
+            android:padding="8dp" />
+
         <!-- Post Button -->
         <Button
             android:id="@+id/btnPost"

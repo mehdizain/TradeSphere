@@ -6,12 +6,38 @@
     android:elevation="4dp"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/tvPostTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Post Title"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Post Title -->
+        <TextView
+            android:id="@+id/tvPostTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Title"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <!-- Post Category -->
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+
+        <!-- Post Image -->
+        <ImageView
+            android:id="@+id/imgPostImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Post Image" />
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

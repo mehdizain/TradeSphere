@@ -1,20 +1,19 @@
 package com.example.tradesphere.fragments
 
+import com.example.tradesphere.fragments.Post
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tradesphere.NewPostActivity
 import com.example.tradesphere.R
 import com.example.tradesphere.adapters.PostAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
 
@@ -27,6 +26,7 @@ class HomeFragment : Fragment() {
     private lateinit var tvHomeTitle: TextView
 
     private var selectedCategory: String = "All"
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,18 +87,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun performCategorySearch() {
-        // Replace with real search logic to fetch posts based on the selected category
-        val posts = getPostsByCategory(selectedCategory)
-        recyclerPosts.adapter = PostAdapter(posts)
-    }
-
-    private fun getPostsByCategory(category: String): List<String> {
-        // Placeholder method to return mock data based on category
-        return when (category) {
-            "Electronics" -> listOf("Electronics Post 1", "Electronics Post 2")
-            "Clothing" -> listOf("Clothing Post 1", "Clothing Post 2")
-            "Books" -> listOf("Book Post 1", "Book Post 2")
-            else -> listOf("Post 1", "Post 2", "Post 3")
+        // Fetch posts from Firestore based on the selected category
+        val postsQuery = when (selectedCategory) {
+            "Electronics" -> firestore.collection("posts").whereEqualTo("category", "Electronics")
+            "Clothing" -> firestore.collection("posts").whereEqualTo("category", "Clothing")
+            "Books" -> firestore.collection("posts").whereEqualTo("category", "Books")
+            else -> firestore.collection("posts")
         }
+
+        postsQuery.get()
+            .addOnSuccessListener { querySnapshot ->
+                // Extract data from Firestore query result
+                val posts = querySnapshot.documents.mapNotNull { doc ->
+                    val postText = doc.getString("text") ?: return@mapNotNull null
+                    val postImageUrl = doc.getString("imageUrl")
+                    val category = doc.getString("category") ?: "Unknown"
+                    Post(postText,  category,postImageUrl)
+                }
+                recyclerPosts.adapter = PostAdapter(posts)  // Pass the mapped posts to the adapter
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to load posts: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

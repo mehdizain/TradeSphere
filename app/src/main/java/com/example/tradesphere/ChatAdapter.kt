@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tradesphere.R
 
-class ChatAdapter(private val chatList: List<String>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(private val chatList: List<String>) :
+    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false)
@@ -15,8 +16,8 @@ class ChatAdapter(private val chatList: List<String>) : RecyclerView.Adapter<Cha
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val chat = chatList[position]
-        holder.tvChatName.text = chat
+        val chatName = chatList[position]
+        holder.tvChatName.text = chatName
     }
 
     override fun getItemCount(): Int {

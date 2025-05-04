@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tradesphere.R
 import com.example.tradesphere.adapters.MessageAdapter
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.auth.FirebaseAuth
 
 class FragmentChat : Fragment() {
 
@@ -24,6 +27,16 @@ class FragmentChat : Fragment() {
     private lateinit var btnBack: ImageButton
 
     private lateinit var chatTitle: String
+    private lateinit var chatId: String
+
+    // Firestore instance
+    private val db = FirebaseFirestore.getInstance()
+
+    // Firebase Authentication instance
+    private val auth = FirebaseAuth.getInstance()
+
+    // Adapter for messages
+    private lateinit var messageAdapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +58,16 @@ class FragmentChat : Fragment() {
 
         // Get the chat title passed from the previous fragment (e.g., "Shoes Palace")
         chatTitle = arguments?.getString("CHAT_TITLE") ?: "Unknown Chat"
+        chatId = arguments?.getString("CHAT_ID") ?: "unknown_chat_id"
         tvChatHeader.text = chatTitle
 
         // Set up RecyclerView for chat messages
         recyclerMessages.layoutManager = LinearLayoutManager(context)
-        recyclerMessages.adapter = MessageAdapter(emptyList()) // Replace with actual message data
+        messageAdapter = MessageAdapter(emptyList())
+        recyclerMessages.adapter = messageAdapter
+
+        // Fetch messages from Firestore
+        fetchMessages()
 
         // Handle back button click
         btnBack.setOnClickListener {
@@ -61,12 +79,60 @@ class FragmentChat : Fragment() {
         btnSendMessage.setOnClickListener {
             val message = etMessageInput.text.toString().trim()
             if (message.isNotEmpty()) {
-                // Here you would send the message to the chat
-                // You can add the message to the RecyclerView or send it to the backend
-                etMessageInput.text.clear()
+                sendMessage(message)
+                etMessageInput.text.clear() // Clear input after sending message
             }
         }
 
         return rootView
+    }
+
+    private fun fetchMessages() {
+        // Fetch messages from Firestore for the current chat
+        db.collection("chats")
+            .document(chatId)
+            .collection("messages")
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    // Handle error
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val messages = snapshot.documents.map { document ->
+                        val sender = document.getString("sender") ?: ""
+                        val message = document.getString("message") ?: ""
+                        val timestamp = document.getLong("timestamp") ?: 0L
+                        Message(sender, message, timestamp)
+                    }
+                    messageAdapter.updateMessages(messages)
+                }
+            }
+    }
+
+    private fun sendMessage(message: String) {
+        // Get the current user
+        val user = auth.currentUser
+        if (user != null) {
+            // Create message object
+            val messageData = hashMapOf(
+                "sender" to user.displayName,
+                "message" to message,
+                "timestamp" to System.currentTimeMillis()
+            )
+
+            // Send the message to Firestore
+            db.collection("chats")
+                .document(chatId)
+                .collection("messages")
+                .add(messageData)
+                .addOnSuccessListener {
+                    // Message sent successfully
+                }
+                .addOnFailureListener { exception ->
+                    // Handle error
+                }
+        }
     }
 }
