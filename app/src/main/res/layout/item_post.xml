@@ -1,43 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="8dp"
     android:elevation="4dp"
-    android:padding="12dp">
+    card_view:cardCornerRadius="8dp"
+    android:foreground="?android:attr/selectableItemBackground">
 
+    <!-- Root LinearLayout wrapping both header and post content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
-        <!-- Post Title -->
-        <TextView
-            android:id="@+id/tvPostTitle"
+        <!-- Header: Logo and App Title -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Post Title"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <!-- Post Category -->
-        <TextView
-            android:id="@+id/tvCategory"
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_tradesphere"
+                android:contentDescription="App Logo"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvAppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TradeSphere"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Post content -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category"
-            android:textSize="14sp"
-            android:textColor="@color/black" />
+            android:orientation="vertical"
+            android:padding="12dp">
 
-        <!-- Post Image -->
-        <ImageView
-            android:id="@+id/imgPostImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Post Image" />
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvPostTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wireless Headphones"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
+            <!-- Category -->
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Electronics"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="2dp" />
+
+            <!-- Image -->
+            <ImageView
+                android:id="@+id/imgPostImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_product"
+                android:contentDescription="Post Image"
+                android:background="#DDDDDD" />
+
+            <!-- Price -->
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rs. 2,999"
+                android:textColor="@color/purple_500"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Brand new wireless headphones with noise cancellation and long battery life."
+                android:textColor="#444"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+            <!-- Reviews -->
+            <TextView
+                android:id="@+id/tvReviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="★ 4.5 (23 reviews)"
+                android:textColor="#FFA000"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

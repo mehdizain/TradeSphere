@@ -1,51 +1,98 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="12dp"
+    android:background="#FAFAFA"> <!-- Light neutral background -->
 
-    <!-- Input field for new chat name -->
-    <EditText
-        android:id="@+id/etNewChatName"
+    <!-- Chat Header -->
+    <TextView
+        android:id="@+id/tvChatsHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Chat Name"
-        android:textSize="16sp"
-        android:padding="8dp" />
+        android:text="  Alice Johnson"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="#3F51B5"
+    android:paddingTop="14dp"
+    android:paddingBottom="18dp"
+    android:layout_marginBottom="10dp"/>
 
-    <!-- Button to create new chat -->
-    <ImageButton
-        android:id="@+id/btnCreateChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add"
-        android:contentDescription="Create Chat"
-        android:layout_gravity="center" />
-
-    <!-- RecyclerView for chat messages -->
-    <RecyclerView
-        android:id="@+id/recyclerMessages"
+    <!-- Chat Messages -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"
-        android:scrollbars="vertical" />
+        android:background="#FAFAFA"
+        android:padding="4dp">
 
-    <!-- Message input field -->
-    <EditText
-        android:id="@+id/etMessageInput"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Message 1 (received) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="6dp"
+                android:background="#E0E0E0"
+            android:padding="12dp"
+            android:text="Hi there!"
+            android:textColor="#000000" />
+
+            <!-- Message 2 (sent) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="6dp"
+                android:background="#3F51B5"
+            android:padding="12dp"
+            android:text="Hello! Just testing the chat UI."
+            android:textColor="#FFFFFF" />
+
+            <!-- Message 3 (received) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="6dp"
+                android:background="#E0E0E0"
+                android:padding="12dp"
+                android:text="Looks good so far!"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Message Input Area -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type a message"
-        android:padding="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
 
-    <!-- Send message button -->
-    <ImageButton
-        android:id="@+id/btnSendMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_send"
-        android:contentDescription="Send Message"
-        android:layout_gravity="end" />
+        <EditText
+            android:id="@+id/etMessageInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Type a message"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
+            android:textColor="#000000"
+            android:textColorHint="#888888" />
 
+        <ImageButton
+            android:id="@+id/btnSendMessage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_send"
+            android:background="#3F51B5"
+            android:contentDescription="Send Message" />
+    </LinearLayout>
 </LinearLayout>

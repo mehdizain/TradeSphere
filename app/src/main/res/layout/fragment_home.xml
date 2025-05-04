@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="16dp">
@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:paddingBottom="12dp">
 
-        <!-- App Title -->
+        <!-- App Logo -->
         <ImageView
             android:id="@+id/imgLogo"
             android:layout_width="40dp"
@@ -24,6 +24,7 @@
             android:contentDescription="App Logo"
             android:layout_marginEnd="8dp" />
 
+        <!-- App Title -->
         <TextView
             android:id="@+id/tvHomeTitle"
             android:layout_width="0dp"
@@ -34,7 +35,7 @@
             android:textStyle="bold"
             android:textColor="@color/black" />
 
-        <!-- New Post Icon -->
+        <!-- Add New Post Button -->
         <ImageButton
             android:id="@+id/btnNewPost"
             android:layout_width="40dp"
@@ -42,14 +43,15 @@
             android:src="@drawable/ic_add"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Add New Post"
-            app:tint="@color/purple_500"/>
+            app:tint="@color/purple_500" />
     </LinearLayout>
 
     <!-- Category Filter -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="12dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/categoryFilterLayout"
@@ -64,7 +66,7 @@
                 android:text="All"
                 android:layout_marginEnd="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp" />
             <Button
                 android:id="@+id/btnElectronics"
                 android:layout_width="wrap_content"
@@ -72,7 +74,7 @@
                 android:text="Electronics"
                 android:layout_marginEnd="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp" />
             <Button
                 android:id="@+id/btnClothing"
                 android:layout_width="wrap_content"
@@ -80,7 +82,7 @@
                 android:text="Clothing"
                 android:layout_marginEnd="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp" />
             <Button
                 android:id="@+id/btnBooks"
                 android:layout_width="wrap_content"
@@ -88,14 +90,154 @@
                 android:text="Books"
                 android:layout_marginEnd="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                android:paddingEnd="16dp" />
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Posts List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPosts"
+    <!-- Hardcoded Posts -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Post 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F0F0F0"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Samsung Galaxy S21"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lightly used, excellent condition. Comes with original box and charger."
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 85,000"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <!-- Post 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F0F0F0"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoodie - Large"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cozy and warm hoodie, perfect for winter. Worn only twice."
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 2,500"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <!-- Post 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F0F0F0"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="The Alchemist by Paulo Coelho"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A life-changing book. Gently used, no marks."
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 500"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+            <!-- Post 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F0F0F0"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bluetooth Headphones"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Noise-cancelling headphones with great battery life. 6 months old."
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 3,800"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_500"
+                    android:layout_marginTop="6dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

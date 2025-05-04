@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp"
-        android:background="@drawable/account_info_bg"
+        android:padding="8dp"
+        android:background="@color/purple_500"
         android:layout_marginBottom="16dp">
 
         <!-- Profile Picture -->
@@ -58,32 +58,88 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:layout_marginLeft="25dp">
 
-            <TextView
-                android:id="@+id/tvFollowers"
+            <!-- Followers -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Followers: 120"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="20dp">
 
-            <TextView
-                android:id="@+id/tvFollowing"
+                <TextView
+                    android:id="@+id/tvFollowersLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Followers"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/tvFollowersCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="120"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <!-- Following -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Following: 80"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginEnd="20dp">
 
-            <TextView
-                android:id="@+id/tvPosts"
+                <TextView
+                    android:id="@+id/tvFollowingLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Following"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/tvFollowingCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="80"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <!-- Posts -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Posts: 45"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tvPostsLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Posts"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:id="@+id/tvPostsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
