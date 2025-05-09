@@ -1,5 +1,6 @@
 package com.example.tradesphere.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +12,12 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tradesphere.ProductDetailsActivity
 import com.example.tradesphere.R
-import com.example.tradesphere.adapters.SearchResultAdapter
+import com.example.tradesphere.User
+import com.example.tradesphere.UserProfileActivity
+import com.example.tradesphere.adapters.PostAdapter
+import com.example.tradesphere.adapters.UserAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchFragment : Fragment() {
@@ -29,8 +34,8 @@ class SearchFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
 
     // Lists to store fetched data
-    private var usersList = mutableListOf<String>()
-    private var postsList = mutableListOf<String>()
+    private var usersList = mutableListOf<User>()
+    private var postsList = mutableListOf<Post>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,11 +86,23 @@ class SearchFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 usersList.clear()
                 for (document in documents) {
-                    val name = document.getString("name") ?: "Unknown"
-                    usersList.add(name)
+                    val user = User(
+                        description = document.getString("description") ?: "Unknown",
+                        email = document.getString("email") ?: "Unknown",
+                        followers = document.getLong("followers") ?: 0,
+                        following = document.getLong("following") ?: 0,
+                        name = document.getString("name") ?: "Unknown",
+                        phone = document.getString("phone") ?: "Unknown",
+                        username = document.getString("username") ?: "Unknown"
+                    )
+                    usersList.add(user)
                 }
                 // Perform search again after loading data
                 performSearch()
+            }
+            .addOnFailureListener { e ->
+                // Optional: Handle failure (e.g., show toast)
+                performSearch() // Proceed with empty list
             }
 
         // Fetch posts from Firestore
@@ -94,11 +111,19 @@ class SearchFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 postsList.clear()
                 for (document in documents) {
-                    val title = document.getString("title") ?: "Untitled"
-                    postsList.add(title)
+                    val postId = document.id
+                    val title = document.getString("title") ?: continue
+                    val text = document.getString("text") ?: continue
+                    val imageUrl = document.getString("imageUrl")
+                    val category = document.getString("category") ?: "Unknown"
+                    postsList.add(Post(postId, title, text, category, imageUrl))
                 }
                 // Perform search again after loading data
                 performSearch()
+            }
+            .addOnFailureListener { e ->
+                // Optional: Handle failure (e.g., show toast)
+                performSearch() // Proceed with empty list
             }
     }
 
@@ -114,12 +139,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun performSearch() {
-        val results = if (selectedCategory == "Accounts") {
-            usersList.filter { it.contains(searchQuery, ignoreCase = true) }
+        if (selectedCategory == "Accounts") {
+            val results = usersList.filter {
+                it.username.contains(searchQuery, ignoreCase = true) ||
+                        it.name.contains(searchQuery, ignoreCase = true)
+            }
+            recyclerSearchResults.adapter = UserAdapter(results) { user ->
+                val intent = Intent(requireContext(), UserProfileActivity::class.java).apply {
+                    putExtra("username", user.username)
+                }
+                startActivity(intent)
+            }
         } else {
-            postsList.filter { it.contains(searchQuery, ignoreCase = true) }
+            val results = postsList.filter { it.title.contains(searchQuery, ignoreCase = true) }
+            recyclerSearchResults.adapter = PostAdapter(results) { post ->
+                val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                    putExtra("postId", post.postId)
+                    putExtra("title", post.title)
+                    putExtra("text", post.text)
+                    putExtra("imageUrl", post.imageUrl)
+                    putExtra("category", post.category)
+                }
+                startActivity(intent)
+            }
         }
-
-        recyclerSearchResults.adapter = SearchResultAdapter(results)
     }
 }
