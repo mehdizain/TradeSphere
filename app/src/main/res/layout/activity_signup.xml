@@ -46,7 +46,18 @@
             android:hint="Full Name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edittext_background" />
+
+        <!-- Username -->
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:inputType="text"
+            android:padding="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edittext_background" />
 
         <!-- Email -->
         <EditText
@@ -57,7 +68,7 @@
             android:inputType="textEmailAddress"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edittext_background" />
 
         <!-- Phone -->
         <EditText
@@ -68,7 +79,7 @@
             android:inputType="phone"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edittext_background" />
 
         <!-- Password -->
         <EditText
@@ -79,7 +90,7 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edittext_background" />
 
         <!-- Confirm Password -->
         <EditText
@@ -90,7 +101,7 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edittext_background" />
 
         <!-- Signup Button -->
         <Button
@@ -100,7 +111,7 @@
             android:text="Sign Up"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/purple_500"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
         <!-- Already have an account -->
         <TextView
@@ -111,7 +122,7 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
     </LinearLayout>
 </ScrollView>

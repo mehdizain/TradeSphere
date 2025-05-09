@@ -13,6 +13,7 @@ import java.util.*
 
 class NewPostActivity : AppCompatActivity() {
 
+    private lateinit var etPostTitle: EditText
     private lateinit var etPostContent: EditText
     private lateinit var imgPreview: ImageView
     private lateinit var btnAddImage: Button
@@ -33,6 +34,7 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_newpost)
 
+        etPostTitle = findViewById(R.id.etPostTitle)
         etPostContent = findViewById(R.id.etPostContent)
         imgPreview = findViewById(R.id.imgPreview)
         btnAddImage = findViewById(R.id.btnAddImage)
@@ -55,8 +57,14 @@ class NewPostActivity : AppCompatActivity() {
 
         // Post button logic
         btnPost.setOnClickListener {
+            val postTitle = etPostTitle.text.toString().trim()
             val postText = etPostContent.text.toString().trim()
             val selectedCategory = spinnerCategory.selectedItem.toString()
+
+            if (postTitle.isEmpty()) {
+                Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             if (postText.isEmpty()) {
                 Toast.makeText(this, "Please write something", Toast.LENGTH_SHORT).show()
@@ -69,9 +77,9 @@ class NewPostActivity : AppCompatActivity() {
             }
 
             if (selectedImageUri != null) {
-                uploadImageAndSavePost(postText, selectedImageUri!!, selectedCategory)
+                uploadImageAndSavePost(postTitle, postText, selectedImageUri!!, selectedCategory)
             } else {
-                savePostToFirestore(postText, null, selectedCategory)
+                savePostToFirestore(postTitle, postText, null, selectedCategory)
             }
         }
     }
@@ -86,14 +94,14 @@ class NewPostActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImageAndSavePost(text: String, imageUri: Uri, category: String) {
+    private fun uploadImageAndSavePost(title: String, text: String, imageUri: Uri, category: String) {
         val fileName = "post_images/${UUID.randomUUID()}.jpg"
         val imageRef = storageRef.child(fileName)
 
         imageRef.putFile(imageUri)
             .addOnSuccessListener {
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    savePostToFirestore(text, uri.toString(), category)
+                    savePostToFirestore(title, text, uri.toString(), category)
                 }
             }
             .addOnFailureListener { e ->
@@ -101,11 +109,12 @@ class NewPostActivity : AppCompatActivity() {
             }
     }
 
-    private fun savePostToFirestore(text: String, imageUrl: String?, category: String) {
+    private fun savePostToFirestore(title: String, text: String, imageUrl: String?, category: String) {
         val userId = auth.currentUser?.uid ?: return
 
         val postData = hashMapOf(
             "userId" to userId,
+            "title" to title,
             "text" to text,
             "imageUrl" to imageUrl,
             "category" to category,

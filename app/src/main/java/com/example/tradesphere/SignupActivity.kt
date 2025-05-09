@@ -18,17 +18,15 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        FirebaseApp.initializeApp(this) // Ensures Firebase is initialized
+        FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        // Initialize Firebase components
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-
-
         val etName: EditText = findViewById(R.id.etName)
+        val etUsername: EditText = findViewById(R.id.etUsername) // New field for username
         val etEmail: EditText = findViewById(R.id.etEmail)
         val etPhone: EditText = findViewById(R.id.etPhone)
         val etPassword: EditText = findViewById(R.id.etPassword)
@@ -38,63 +36,80 @@ class SignupActivity : AppCompatActivity() {
 
         btnSignup.setOnClickListener {
             val name = etName.text.toString().trim()
+            val username = etUsername.text.toString().trim()
             val email = etEmail.text.toString().trim()
             val phone = etPhone.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirmPassword = etConfirmPassword.text.toString().trim()
 
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (name.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            } else if (password != confirmPassword) {
+                return@setOnClickListener
+            }
+
+            if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-            } else {
-                // Firebase signup
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // Set the displayName for the user
-                            val user = auth.currentUser
-                            val profileUpdates = UserProfileChangeRequest.Builder()
-                                .setDisplayName(name)
-                                .build()
+                return@setOnClickListener
+            }
 
-                            user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
-                                if (profileTask.isSuccessful) {
-                                    // After updating displayName, store the additional data in Firestore
-                                    val userId = user.uid
-                                    val userData = hashMapOf(
-                                        "name" to name,
-                                        "email" to email,
-                                        "phone" to phone,
-                                        "description" to "",
-                                        "followers" to 0,
-                                        "following" to 0
-                                    )
+            // Check if username is unique
+            db.collection("users")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Proceed with Firebase signup
+                        auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val user = auth.currentUser
+                                    val profileUpdates = UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name)
+                                        .build()
 
-                                    db.collection("users").document(userId)
-                                        .set(userData)
-                                        .addOnSuccessListener {
-                                            Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show()
-                                            startActivity(Intent(this, LoginActivity::class.java))  // Navigate to login
-                                            finish()  // Close signup activity
+                                    user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileTask ->
+                                        if (profileTask.isSuccessful) {
+                                            val userId = user.uid
+                                            val userData = hashMapOf(
+                                                "name" to name,
+                                                "username" to username,
+                                                "email" to email,
+                                                "phone" to phone,
+                                                "description" to "", // Can prompt for description later
+                                                "followers" to 0,
+                                                "following" to 0
+                                            )
+
+                                            db.collection("users").document(userId)
+                                                .set(userData)
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show()
+                                                    startActivity(Intent(this, LoginActivity::class.java))
+                                                    finish()
+                                                }
+                                                .addOnFailureListener { exception ->
+                                                    Toast.makeText(this, "Error saving user data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                                }
+                                        } else {
+                                            Toast.makeText(this, "Failed to set display name: ${profileTask.exception?.message}", Toast.LENGTH_SHORT).show()
                                         }
-                                        .addOnFailureListener { exception ->
-                                            Toast.makeText(this, "Error saving user data: ${exception.message}", Toast.LENGTH_SHORT).show()
-                                        }
+                                    }
                                 } else {
-                                    Toast.makeText(this, "Failed to set display name", Toast.LENGTH_SHORT).show()
+                                    val error = task.exception?.message ?: "Signup failed"
+                                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
                                 }
                             }
-                        } else {
-                            val error = task.exception?.message ?: "Signup failed"
-                            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-                        }
                     }
-            }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error checking username: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
 
         tvLoginRedirect.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))  // Redirect to login if needed
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 }

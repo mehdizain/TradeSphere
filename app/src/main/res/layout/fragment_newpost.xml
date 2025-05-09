@@ -36,6 +36,19 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <!-- Post Title -->
+        <EditText
+            android:id="@+id/etPostTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter post title"
+            android:background="@drawable/edit_text_border"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
         <!-- Write something -->
         <EditText
             android:id="@+id/etPostContent"
