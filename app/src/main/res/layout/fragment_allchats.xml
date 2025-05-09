@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="16dp">
 
-    <!-- Top App Bar (TradeSphere Logo and Title) -->
+    <!-- Top App Bar -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp">
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/imgLogo"
@@ -26,31 +27,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TradeSphere"
-            android:textSize="32sp"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
     </LinearLayout>
 
-    <!-- Chats Header -->
-    <TextView
-        android:id="@+id/tvChatsHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chats"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:padding="16dp" />
-
-    <!-- RecyclerView for All Chats -->
+    <!-- Chats List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChats"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:layout_weight="1" />
 
 </LinearLayout>

@@ -19,6 +19,7 @@ import com.example.tradesphere.UserProfileActivity
 import com.example.tradesphere.adapters.PostAdapter
 import com.example.tradesphere.adapters.UserAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class SearchFragment : Fragment() {
 
@@ -36,6 +37,7 @@ class SearchFragment : Fragment() {
     // Lists to store fetched data
     private var usersList = mutableListOf<User>()
     private var postsList = mutableListOf<Post>()
+    private var postsListener: ListenerRegistration? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,8 +81,14 @@ class SearchFragment : Fragment() {
         return rootView
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Remove Firestore listener to prevent memory leaks
+        postsListener?.remove()
+    }
+
     private fun fetchDataFromFirestore() {
-        // Fetch users from Firestore
+        // Fetch users from Firestore (one-time query)
         db.collection("users")
             .get()
             .addOnSuccessListener { documents ->
@@ -97,33 +105,32 @@ class SearchFragment : Fragment() {
                     )
                     usersList.add(user)
                 }
-                // Perform search again after loading data
                 performSearch()
             }
             .addOnFailureListener { e ->
-                // Optional: Handle failure (e.g., show toast)
                 performSearch() // Proceed with empty list
             }
 
-        // Fetch posts from Firestore
-        db.collection("posts")
-            .get()
-            .addOnSuccessListener { documents ->
-                postsList.clear()
-                for (document in documents) {
-                    val postId = document.id
-                    val title = document.getString("title") ?: continue
-                    val text = document.getString("text") ?: continue
-                    val imageUrl = document.getString("imageUrl")
-                    val category = document.getString("category") ?: "Unknown"
-                    postsList.add(Post(postId, title, text, category, imageUrl))
+        // Fetch posts from Firestore (real-time listener)
+        postsListener = db.collection("posts")
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    performSearch() // Proceed with existing list
+                    return@addSnapshotListener
                 }
-                // Perform search again after loading data
-                performSearch()
-            }
-            .addOnFailureListener { e ->
-                // Optional: Handle failure (e.g., show toast)
-                performSearch() // Proceed with empty list
+
+                if (snapshot != null) {
+                    postsList.clear()
+                    for (document in snapshot.documents) {
+                        val postId = document.id
+                        val title = document.getString("title") ?: continue
+                        val text = document.getString("text") ?: continue
+                        val imageUrl = document.getString("imageUrl")
+                        val category = document.getString("category") ?: "Unknown"
+                        postsList.add(Post(postId, title, text, category, imageUrl))
+                    }
+                    performSearch()
+                }
             }
     }
 

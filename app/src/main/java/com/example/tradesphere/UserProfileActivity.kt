@@ -1,5 +1,6 @@
 package com.example.tradesphere
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UserProfileActivity : AppCompatActivity() {
@@ -24,6 +26,7 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var btnStartChat: Button
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private val TAG = "UserProfileActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,8 +73,36 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
         btnStartChat.setOnClickListener {
-            // Handle start chat action (e.g., start chat activity)
-            Toast.makeText(this, "Chat feature coming soon!", Toast.LENGTH_SHORT).show()
+            if (username.isNotEmpty()) {
+                firestore.collection("users")
+                    .whereEqualTo("username", username)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            val document = querySnapshot.documents[0]
+                            val receiverId = document.id
+                            val currentUserId = auth.currentUser?.uid
+                            if (currentUserId != null && receiverId != currentUserId) {
+                                val intent = Intent(this, ChatActivity::class.java).apply {
+                                    putExtra("currentUserId", currentUserId)
+                                    putExtra("receiverId", receiverId)
+                                    putExtra("receiverUsername", username)
+                                }
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(this, "Cannot chat with yourself", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Error fetching user ID: ${e.message}", e)
+                        Toast.makeText(this, "Failed to start chat", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "No user selected", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

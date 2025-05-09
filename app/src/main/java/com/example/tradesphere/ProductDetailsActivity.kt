@@ -1,5 +1,6 @@
 package com.example.tradesphere
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
 import java.util.Locale
@@ -27,6 +29,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var btnStartChat: Button
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
     private val TAG = "ProductDetailsActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,8 +93,55 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
 
         btnStartChat.setOnClickListener {
-            // Handle start chat action (e.g., start chat activity)
-            Toast.makeText(this, "Chat feature coming soon!", Toast.LENGTH_SHORT).show()
+            if (postId.isNotEmpty()) {
+                // Fetch post to get owner's userId
+                firestore.collection("posts")
+                    .document(postId)
+                    .get()
+                    .addOnSuccessListener { postDoc ->
+                        if (postDoc != null && postDoc.exists()) {
+                            val ownerUserId = postDoc.getString("userId")
+                            if (ownerUserId != null) {
+                                // Fetch username from users collection
+                                firestore.collection("users")
+                                    .document(ownerUserId)
+                                    .get()
+                                    .addOnSuccessListener { userDoc ->
+                                        if (userDoc != null && userDoc.exists()) {
+                                            val receiverUsername = userDoc.getString("username") ?: "Unknown"
+                                            val currentUserId = auth.currentUser?.uid
+                                            if (currentUserId != null && ownerUserId != currentUserId) {
+                                                val intent = Intent(this, ChatActivity::class.java).apply {
+                                                    putExtra("currentUserId", currentUserId)
+                                                    putExtra("receiverId", ownerUserId)
+                                                    putExtra("receiverUsername", receiverUsername)
+                                                }
+                                                startActivity(intent)
+                                            } else {
+                                                Toast.makeText(this, "Cannot chat with yourself", Toast.LENGTH_SHORT).show()
+                                            }
+                                        } else {
+                                            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e(TAG, "Error fetching user: ${e.message}", e)
+                                        Toast.makeText(this, "Failed to start chat", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                Toast.makeText(this, "Post owner not found", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this, "Post not found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Error fetching post: ${e.message}", e)
+                        Toast.makeText(this, "Failed to start chat", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "Invalid post", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

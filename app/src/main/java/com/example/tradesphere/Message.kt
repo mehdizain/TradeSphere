@@ -1,6 +1,8 @@
-package com.example.tradesphere.fragments
+package com.example.tradesphere
+
 data class Message(
-    val sender: String,
-    val message: String,
+    val senderId: String,
+    val receiverId: String,
+    val text: String,
     val timestamp: Long
 )

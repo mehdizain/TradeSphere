@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FirebaseStorage
 import com.google.android.gms.tasks.Task
 import android.Manifest
@@ -44,6 +45,7 @@ class AccountFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
     private var profilePicUri: Uri? = null
+    private var postsListener: ListenerRegistration? = null
 
     // Activity result launcher for picking profile picture
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -106,15 +108,17 @@ class AccountFragment : Fragment() {
                     ivProfilePic.setImageResource(R.drawable.ic_default_profile)
                 }
 
-            // Fetch post count
-            db.collection("posts")
+            // Fetch post count (real-time listener)
+            postsListener = db.collection("posts")
                 .whereEqualTo("userId", currentUser.uid)
-                .get()
-                .addOnSuccessListener { documents ->
-                    tvPosts.text = documents.size().toString()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to fetch posts: ${e.message}", Toast.LENGTH_SHORT).show()
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        Toast.makeText(requireContext(), "Failed to fetch posts: ${e.message}", Toast.LENGTH_SHORT).show()
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null) {
+                        tvPosts.text = snapshot.size().toString()
+                    }
                 }
         }
 
@@ -135,6 +139,12 @@ class AccountFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Remove Firestore listener to prevent memory leaks
+        postsListener?.remove()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
