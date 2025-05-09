@@ -15,6 +15,7 @@ class NewPostActivity : AppCompatActivity() {
 
     private lateinit var etPostTitle: EditText
     private lateinit var etPostContent: EditText
+    private lateinit var etPrice: EditText
     private lateinit var imgPreview: ImageView
     private lateinit var btnAddImage: Button
     private lateinit var btnPost: Button
@@ -36,6 +37,7 @@ class NewPostActivity : AppCompatActivity() {
 
         etPostTitle = findViewById(R.id.etPostTitle)
         etPostContent = findViewById(R.id.etPostContent)
+        etPrice = findViewById(R.id.etPrice)
         imgPreview = findViewById(R.id.imgPreview)
         btnAddImage = findViewById(R.id.btnAddImage)
         btnPost = findViewById(R.id.btnPost)
@@ -59,6 +61,7 @@ class NewPostActivity : AppCompatActivity() {
         btnPost.setOnClickListener {
             val postTitle = etPostTitle.text.toString().trim()
             val postText = etPostContent.text.toString().trim()
+            val priceText = etPrice.text.toString().trim()
             val selectedCategory = spinnerCategory.selectedItem.toString()
 
             if (postTitle.isEmpty()) {
@@ -71,15 +74,28 @@ class NewPostActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (priceText.isEmpty()) {
+                Toast.makeText(this, "Please enter a price", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Convert price to Double, handle potential formatting issues
+            val price = try {
+                priceText.toDouble()
+            } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Please enter a valid price", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (selectedCategory.isEmpty()) {
                 Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (selectedImageUri != null) {
-                uploadImageAndSavePost(postTitle, postText, selectedImageUri!!, selectedCategory)
+                uploadImageAndSavePost(postTitle, postText, price, selectedImageUri!!, selectedCategory)
             } else {
-                savePostToFirestore(postTitle, postText, null, selectedCategory)
+                savePostToFirestore(postTitle, postText, price, null, selectedCategory)
             }
         }
     }
@@ -94,14 +110,14 @@ class NewPostActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImageAndSavePost(title: String, text: String, imageUri: Uri, category: String) {
+    private fun uploadImageAndSavePost(title: String, text: String, price: Double, imageUri: Uri, category: String) {
         val fileName = "post_images/${UUID.randomUUID()}.jpg"
         val imageRef = storageRef.child(fileName)
 
         imageRef.putFile(imageUri)
             .addOnSuccessListener {
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    savePostToFirestore(title, text, uri.toString(), category)
+                    savePostToFirestore(title, text, price, uri.toString(), category)
                 }
             }
             .addOnFailureListener { e ->
@@ -109,13 +125,14 @@ class NewPostActivity : AppCompatActivity() {
             }
     }
 
-    private fun savePostToFirestore(title: String, text: String, imageUrl: String?, category: String) {
+    private fun savePostToFirestore(title: String, text: String, price: Double, imageUrl: String?, category: String) {
         val userId = auth.currentUser?.uid ?: return
 
         val postData = hashMapOf(
             "userId" to userId,
             "title" to title,
             "text" to text,
+            "price" to price,
             "imageUrl" to imageUrl,
             "category" to category,
             "timestamp" to System.currentTimeMillis()

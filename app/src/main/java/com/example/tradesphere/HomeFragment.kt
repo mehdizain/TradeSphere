@@ -1,6 +1,5 @@
 package com.example.tradesphere.fragments
 
-import com.example.tradesphere.fragments.Post
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import com.example.tradesphere.NewPostActivity
 import com.example.tradesphere.R
 import com.example.tradesphere.adapters.PostAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.tradesphere.ProductDetailsActivity
 
 class HomeFragment : Fragment() {
 
@@ -45,7 +45,16 @@ class HomeFragment : Fragment() {
 
         // Set up RecyclerView
         recyclerPosts.layoutManager = LinearLayoutManager(context)
-        recyclerPosts.adapter = PostAdapter(emptyList())  // Placeholder for posts
+        recyclerPosts.adapter = PostAdapter(emptyList()) { post ->
+            val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                putExtra("postId", post.postId)
+                putExtra("title", post.title)
+                putExtra("text", post.text)
+                putExtra("imageUrl", post.imageUrl)
+                putExtra("category", post.category)
+            }
+            startActivity(intent)
+        }
 
         // Set category filter listeners
         btnAll.setOnClickListener {
@@ -75,6 +84,9 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        // Initial load of posts
+        performCategorySearch()
+
         return rootView
     }
 
@@ -99,12 +111,23 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener { querySnapshot ->
                 // Extract data from Firestore query result
                 val posts = querySnapshot.documents.mapNotNull { doc ->
+                    val postId = doc.id
+                    val title = doc.getString("title") ?: return@mapNotNull null
                     val postText = doc.getString("text") ?: return@mapNotNull null
                     val postImageUrl = doc.getString("imageUrl")
                     val category = doc.getString("category") ?: "Unknown"
-                    Post(postText,  category,postImageUrl)
+                    Post(postId, title, postText, category, postImageUrl)
                 }
-                recyclerPosts.adapter = PostAdapter(posts)  // Pass the mapped posts to the adapter
+                recyclerPosts.adapter = PostAdapter(posts) { post ->
+                    val intent = Intent(requireContext(), ProductDetailsActivity::class.java).apply {
+                        putExtra("postId", post.postId)
+                        putExtra("title", post.title)
+                        putExtra("text", post.text)
+                        putExtra("imageUrl", post.imageUrl)
+                        putExtra("category", post.category)
+                    }
+                    startActivity(intent)
+                }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Failed to load posts: ${e.message}", Toast.LENGTH_SHORT).show()

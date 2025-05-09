@@ -49,6 +49,35 @@
             android:inputType="text"
             android:layout_marginBottom="16dp" />
 
+        <!-- Price Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter price"
+                android:background="@drawable/edit_text_border"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
         <!-- Write something -->
         <EditText
             android:id="@+id/etPostContent"
