@@ -1,5 +1,6 @@
 package com.example.tradesphere
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -61,6 +62,18 @@ class ChatActivity : AppCompatActivity() {
         }
         messageAdapter = MessageAdapter(messages, currentUserId)
         recyclerMessages.adapter = messageAdapter
+
+        // Make receiver username clickable
+        tvReceiverUsername.setOnClickListener {
+            if (receiverUsername.isNotEmpty() && receiverUsername != "Unknown") {
+                val intent = Intent(this, UserProfileActivity::class.java).apply {
+                    putExtra("username", receiverUsername)
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Invalid user profile", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         // Load messages
         listenForMessages()

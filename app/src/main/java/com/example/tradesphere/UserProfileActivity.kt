@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -28,6 +30,9 @@ class UserProfileActivity : AppCompatActivity() {
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private val TAG = "UserProfileActivity"
+    private var followersListener: ListenerRegistration? = null
+    private var followStatusListener: ListenerRegistration? = null
+    private var targetUserId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +62,7 @@ class UserProfileActivity : AppCompatActivity() {
         tvUserPhone.text = "Loading..."
         tvUserFollowers.text = "Followers: Loading..."
         tvUserFollowing.text = "Following: Loading..."
+        btnFollow.text = "Loading..."
 
         // Load user data from Firestore
         if (username.isNotEmpty()) {
@@ -68,8 +74,20 @@ class UserProfileActivity : AppCompatActivity() {
 
         // Set button click listeners
         btnFollow.setOnClickListener {
-            // Handle follow action (e.g., update followers in Firestore)
-            Toast.makeText(this, "Follow feature coming soon!", Toast.LENGTH_SHORT).show()
+            val currentUserId = auth.currentUser?.uid
+            if (currentUserId == null) {
+                Toast.makeText(this, "Please log in to follow", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (targetUserId == null) {
+                Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (currentUserId == targetUserId) {
+                Toast.makeText(this, "Cannot follow yourself", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            toggleFollow(currentUserId, targetUserId!!)
         }
 
         btnStartChat.setOnClickListener {
@@ -106,6 +124,13 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // Remove Firestore listeners to prevent memory leaks
+        followersListener?.remove()
+        followStatusListener?.remove()
+    }
+
     private fun loadUserFromFirestore(username: String) {
         firestore.collection("users")
             .whereEqualTo("username", username)
@@ -113,6 +138,7 @@ class UserProfileActivity : AppCompatActivity() {
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
                     val document = querySnapshot.documents[0]
+                    targetUserId = document.id
                     val description = document.getString("description") ?: "No description"
                     val email = document.getString("email") ?: "No email"
                     val followers = document.getLong("followers") ?: 0
@@ -128,6 +154,43 @@ class UserProfileActivity : AppCompatActivity() {
                     tvUserPhone.text = phone
                     tvUserFollowers.text = "Followers: $followers"
                     tvUserFollowing.text = "Following: $following"
+
+                    // Set up real-time listener for followers count
+                    followersListener = firestore.collection("users")
+                        .document(targetUserId!!)
+                        .addSnapshotListener { snapshot, e ->
+                            if (e != null) {
+                                Log.e(TAG, "Error fetching followers: ${e.message}", e)
+                                tvUserFollowers.text = "Followers: Error"
+                                return@addSnapshotListener
+                            }
+                            if (snapshot != null && snapshot.exists()) {
+                                val updatedFollowers = snapshot.getLong("followers") ?: 0
+                                tvUserFollowers.text = "Followers: $updatedFollowers"
+                            } else {
+                                tvUserFollowers.text = "Followers: 0"
+                            }
+                        }
+
+                    // Check follow status
+                    val currentUserId = auth.currentUser?.uid
+                    if (currentUserId != null && currentUserId != targetUserId) {
+                        followStatusListener = firestore.collection("users")
+                            .document(targetUserId!!)
+                            .collection("followers")
+                            .document(currentUserId)
+                            .addSnapshotListener { snapshot, e ->
+                                if (e != null) {
+                                    Log.e(TAG, "Error checking follow status: ${e.message}", e)
+                                    btnFollow.text = "Follow"
+                                    return@addSnapshotListener
+                                }
+                                btnFollow.text = if (snapshot != null && snapshot.exists()) "Unfollow" else "Follow"
+                            }
+                    } else {
+                        btnFollow.text = "Follow"
+                        btnFollow.isEnabled = false // Disable for self or unauthenticated
+                    }
                 } else {
                     Log.d(TAG, "User document doesn't exist")
                     displayErrorState()
@@ -136,7 +199,73 @@ class UserProfileActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error getting user document: ${e.message}", e)
                 displayErrorState()
-                Toast.makeText(this, "Failed to load user details", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to load user: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun toggleFollow(currentUserId: String, targetUserId: String) {
+        Log.d(TAG, "Toggling follow: currentUserId=$currentUserId, targetUserId=$targetUserId")
+        // Check current follow status
+        val followRef = firestore.collection("users")
+            .document(targetUserId)
+            .collection("followers")
+            .document(currentUserId)
+
+        followRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    // Unfollow
+                    firestore.runTransaction { transaction ->
+                        // Remove from followers subcollection
+                        transaction.delete(followRef)
+                        // Decrement target user's followers
+                        transaction.update(
+                            firestore.collection("users").document(targetUserId),
+                            "followers",
+                            FieldValue.increment(-1)
+                        )
+                        // Decrement current user's following
+                        transaction.update(
+                            firestore.collection("users").document(currentUserId),
+                            "following",
+                            FieldValue.increment(-1)
+                        )
+                    }.addOnSuccessListener {
+                        Log.d(TAG, "Unfollowed successfully")
+                        Toast.makeText(this, "Unfollowed!", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener { e ->
+                        Log.e(TAG, "Error unfollowing: ${e.message}", e)
+                        Toast.makeText(this, "Failed to unfollow: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Follow
+                    firestore.runTransaction { transaction ->
+                        // Add to followers subcollection
+                        transaction.set(followRef, mapOf("followerId" to currentUserId))
+                        // Increment target user's followers
+                        transaction.update(
+                            firestore.collection("users").document(targetUserId),
+                            "followers",
+                            FieldValue.increment(1)
+                        )
+                        // Increment current user's following
+                        transaction.update(
+                            firestore.collection("users").document(currentUserId),
+                            "following",
+                            FieldValue.increment(1)
+                        )
+                    }.addOnSuccessListener {
+                        Log.d(TAG, "Followed successfully")
+                        Toast.makeText(this, "Followed!", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener { e ->
+                        Log.e(TAG, "Error following: ${e.message}", e)
+                        Toast.makeText(this, "Failed to follow: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error checking follow status: ${e.message}", e)
+                Toast.makeText(this, "Failed to process follow: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -147,5 +276,7 @@ class UserProfileActivity : AppCompatActivity() {
         tvUserPhone.text = "N/A"
         tvUserFollowers.text = "Followers: N/A"
         tvUserFollowing.text = "Following: N/A"
+        btnFollow.text = "Follow"
+        btnFollow.isEnabled = false
     }
 }
