@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TradeSphere"
-                android:textSize="28sp"
+                android:textSize="32sp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -44,7 +44,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:background="@drawable/account_info_bg"
+            android:background="@color/purple_500"
             android:layout_marginBottom="16dp">
 
             <!-- Profile Picture -->
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                     <TextView
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:text="Followers"
                         android:textSize="12sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                     <TextView
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:text="Following"
                         android:textSize="12sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="16sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
 
                     <TextView
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:text="Posts"
                         android:textSize="12sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

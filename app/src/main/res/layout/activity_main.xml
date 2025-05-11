@@ -7,11 +7,11 @@
     android:background="@color/white">
 
     <!-- App Title on Top -->
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <!--LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:padding="10dp">
 
         <ImageView
@@ -26,11 +26,12 @@
             android:id="@+id/tvAppTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TradeSpher"
+            android:text="TradeSphere"
+            android:layout_weight="1"
             android:textSize="32sp"
             android:textColor="@color/black"
             android:textStyle="bold" />
-    </LinearLayout>
+        </LinearLayout-->
 
     <!-- ViewPager2 for Fragments -->
     <androidx.viewpager2.widget.ViewPager2
@@ -44,11 +45,11 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:tabIconTint="@color/purple_500"
-        app:tabSelectedTextColor="@color/purple_500"
-        app:tabTextColor="@color/black"
-        app:tabIndicatorColor="@color/purple_500">
+        android:background="@color/purple_500"
+        app:tabIconTint="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white"
+        app:tabIndicatorColor="@color/purple_700">
 
         <!-- TabItems -->
         <com.google.android.material.tabs.TabItem

@@ -10,6 +10,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingBottom="12dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingBottom="12dp">
@@ -31,13 +37,14 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/black" />
-
+    </LinearLayout>
         <TextView
             android:id="@+id/tvReceiverUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:textColor="@color/purple_500" />
     </LinearLayout>
 
@@ -71,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send"
+            android:padding="13dp"
             android:backgroundTint="@color/purple_500"
             android:textColor="@color/white" />
     </LinearLayout>
