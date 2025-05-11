@@ -46,7 +46,9 @@
             android:hint="Full Name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Username -->
         <EditText
@@ -57,7 +59,9 @@
             android:inputType="text"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Email -->
         <EditText
@@ -68,7 +72,9 @@
             android:inputType="textEmailAddress"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Phone -->
         <EditText
@@ -79,7 +85,9 @@
             android:inputType="phone"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Password -->
         <EditText
@@ -90,7 +98,9 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Confirm Password -->
         <EditText
@@ -101,7 +111,9 @@
             android:inputType="textPassword"
             android:padding="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/edittext_background" />
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"/>
 
         <!-- Signup Button -->
         <Button

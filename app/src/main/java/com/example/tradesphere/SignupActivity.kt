@@ -20,13 +20,17 @@ class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
+
+        // Hide the ActionBar
+        supportActionBar?.hide()
+
         setContentView(R.layout.activity_signup)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
         val etName: EditText = findViewById(R.id.etName)
-        val etUsername: EditText = findViewById(R.id.etUsername) // New field for username
+        val etUsername: EditText = findViewById(R.id.etUsername)
         val etEmail: EditText = findViewById(R.id.etEmail)
         val etPhone: EditText = findViewById(R.id.etPhone)
         val etPassword: EditText = findViewById(R.id.etPassword)
@@ -77,7 +81,7 @@ class SignupActivity : AppCompatActivity() {
                                                 "username" to username,
                                                 "email" to email,
                                                 "phone" to phone,
-                                                "description" to "", // Can prompt for description later
+                                                "description" to "",
                                                 "followers" to 0,
                                                 "following" to 0
                                             )

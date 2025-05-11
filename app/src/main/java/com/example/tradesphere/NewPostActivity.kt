@@ -33,6 +33,7 @@ class NewPostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.fragment_newpost)
 
         etPostTitle = findViewById(R.id.etPostTitle)
